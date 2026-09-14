@@ -60,6 +60,7 @@ const Register = () => {
                     type="text"
                     id="username"
                     name="username"
+                    placeholder="Username"
                     value={formData.username}
                     onChange={handleChange}
                     required
@@ -70,6 +71,7 @@ const Register = () => {
                     type="text"
                     id="firstName"
                     name="firstName"
+                    placeholder="First Name"
                     value={formData.firstName}
                     onChange={handleChange}
                     required
@@ -80,6 +82,7 @@ const Register = () => {
                     type="text"
                     id="lastName"
                     name="lastName"
+                    placeholder="Last Name"
                     value={formData.lastName}
                     onChange={handleChange}
                     required
@@ -90,6 +93,7 @@ const Register = () => {
                     type="email"
                     id="email"
                     name="email"
+                    placeholder="Email"
                     value={formData.email}
                     onChange={handleChange}
                     required
@@ -100,6 +104,7 @@ const Register = () => {
                     type="password"
                     id="password"
                     name="password"
+                    placeholder="Password"
                     value={formData.password}
                     onChange={handleChange}
                     required
