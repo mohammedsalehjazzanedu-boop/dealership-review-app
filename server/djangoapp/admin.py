@@ -21,7 +21,7 @@ class CarModelAdmin(admin.ModelAdmin):
 
 @admin.register(Dealer)
 class DealerAdmin(admin.ModelAdmin):
-    list_display = ('name', 'city', 'state', 'zip_code')
+    list_display = ('id', 'name', 'short_name', 'city', 'state', 'st', 'zip_code', 'lat', 'long')
     list_filter = ('state',)
 
 

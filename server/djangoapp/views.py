@@ -11,6 +11,22 @@ from .models import CarMake, CarModel, Dealer, Review
 logger = logging.getLogger(__name__)
 
 
+def _dealer_to_dict(dealer):
+    return {
+        "id": dealer.id,
+        "name": dealer.name,
+        "short_name": dealer.short_name,
+        "full_name": dealer.full_name,
+        "city": dealer.city,
+        "state": dealer.state,
+        "st": dealer.st,
+        "address": dealer.address,
+        "zip_code": dealer.zip_code,
+        "lat": dealer.lat,
+        "long": dealer.long,
+    }
+
+
 # ---------------------------------------------------------
 # Task 5: Login
 # ---------------------------------------------------------
@@ -77,7 +93,7 @@ def get_dealerships(request, state="All"):
     else:
         dealers = Dealer.objects.filter(state=state)
 
-    dealers_list = list(dealers.values())
+    dealers_list = [_dealer_to_dict(d) for d in dealers]
     return JsonResponse({"status": 200, "dealers": dealers_list})
 
 
@@ -87,14 +103,7 @@ def get_dealerships(request, state="All"):
 def get_dealer_by_id(request, dealer_id):
     try:
         dealer = Dealer.objects.get(id=dealer_id)
-        return JsonResponse({"status": 200, "dealer": {
-            "id": dealer.id,
-            "name": dealer.name,
-            "city": dealer.city,
-            "state": dealer.state,
-            "address": dealer.address,
-            "zip_code": dealer.zip_code,
-        }})
+        return JsonResponse({"status": 200, "dealer": _dealer_to_dict(dealer)})
     except Dealer.DoesNotExist:
         return JsonResponse({"status": 404, "message": "Dealer not found"})
 
@@ -153,7 +162,7 @@ def get_cars_nested(request):
 
 
 # ---------------------------------------------------------
-# get_cars: تنسيق مسطّح (قائمة أزواج ماركة-موديل) - هذا الشكل المطلوب بالتقييم
+# get_cars: تنسيق مسطّح (قائمة أزواج ماركة-موديل)
 # ---------------------------------------------------------
 def get_cars(request):
     car_models = CarModel.objects.select_related('car_make').all()

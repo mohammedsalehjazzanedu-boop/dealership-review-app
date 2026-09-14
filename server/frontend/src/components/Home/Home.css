@@ -67,7 +67,7 @@
     background: white;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 260px;
+    width: 280px;
     padding: 20px;
     text-decoration: none;
     color: #333;
@@ -79,9 +79,21 @@
     transform: translateY(-4px);
 }
 
+.dealer-card .dealer-id {
+    color: #999;
+    font-size: 12px;
+    margin: 0 0 6px;
+}
+
 .dealer-card h3 {
     margin: 0 0 8px;
     color: #2c3e50;
+}
+
+.dealer-card .dealer-address {
+    color: #555;
+    font-size: 14px;
+    margin: 0 0 6px;
 }
 
 .dealer-card .zip {

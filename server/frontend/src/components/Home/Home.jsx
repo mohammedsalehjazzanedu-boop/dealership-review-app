@@ -110,8 +110,11 @@ const Home = () => {
                         key={dealer.id}
                         className="dealer-card"
                     >
+                        <p className="dealer-id">ID: {dealer.id}</p>
                         <h3>{dealer.name}</h3>
-                        <p>{dealer.city}, {dealer.state}</p>
+                        <p className="dealer-address">
+                            {dealer.address}, {dealer.city}, {dealer.state}
+                        </p>
                         <p className="zip">Zip: {dealer.zip_code}</p>
                         {username && (
                             <span className="review-link">Review Dealer</span>
@@ -124,4 +127,3 @@ const Home = () => {
 };
 
 export default Home;
-

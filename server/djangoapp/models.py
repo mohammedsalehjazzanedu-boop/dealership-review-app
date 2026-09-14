@@ -30,15 +30,16 @@ class CarModel(models.Model):
 
 
 class Dealer(models.Model):
-    """
-    ملاحظة: في مشروع IBM الأصلي بيانات الديلرز عادة مخزّنة بـ MongoDB / خدمة خارجية،
-    لكن هون منستخدم موديل بسيط بـ SQLite عشان يسهل التطوير والاختبار محلياً.
-    """
     name = models.CharField(max_length=100)
+    short_name = models.CharField(max_length=100, blank=True, default='')
+    full_name = models.CharField(max_length=200, blank=True, default='')
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
+    st = models.CharField(max_length=10, blank=True, default='')
     address = models.CharField(max_length=255)
     zip_code = models.CharField(max_length=20)
+    lat = models.FloatField(default=0.0)
+    long = models.FloatField(default=0.0)
 
     def __str__(self):
         return self.name
