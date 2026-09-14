@@ -14,6 +14,7 @@ urlpatterns = [
     path('reviews/dealer/<int:dealer_id>', views.get_dealer_reviews, name='get_dealer_reviews'),
     path('review/add', views.add_review, name='add_review'),
 
-    path('carmakes', views.get_cars, name='get_cars'),
+    path('carmakes', views.get_cars_nested, name='get_cars_nested'),
+    path('get_cars', views.get_cars, name='get_cars'),
     path('analyze', views.analyze_review_sentiment, name='analyze_review_sentiment'),
 ]

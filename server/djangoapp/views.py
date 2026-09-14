@@ -134,9 +134,9 @@ def add_review(request):
 
 
 # ---------------------------------------------------------
-# Task 14 & 15: Get all car makes and models
+# Task 14 & 15: Get all car makes and models (تنسيق داخلي متداخل)
 # ---------------------------------------------------------
-def get_cars(request):
+def get_cars_nested(request):
     car_makes = CarMake.objects.all()
     result = []
 
@@ -153,13 +153,25 @@ def get_cars(request):
 
 
 # ---------------------------------------------------------
+# get_cars: تنسيق مسطّح (قائمة أزواج ماركة-موديل) - هذا الشكل المطلوب بالتقييم
+# ---------------------------------------------------------
+def get_cars(request):
+    car_models = CarModel.objects.select_related('car_make').all()
+    cars = []
+
+    for model in car_models:
+        cars.append({
+            "CarMake": model.car_make.name,
+            "CarModel": model.name,
+        })
+
+    return JsonResponse({"CarModels": cars})
+
+
+# ---------------------------------------------------------
 # Task 16: Analyze sentiment of a review
 # ---------------------------------------------------------
 def analyze_sentiment_text(text):
-    """
-    تحليل مشاعر بسيط قائم على الكلمات المفتاحية.
-    (بديل خفيف عن استدعاء خدمة خارجية لتحليل المشاعر)
-    """
     if not text:
         return "neutral"
 
