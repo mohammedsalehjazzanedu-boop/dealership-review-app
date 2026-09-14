@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Home.css";
 
-const API_BASE = "http://localhost:1258";
+const API_BASE = "";
 
 const Home = () => {
     const [dealers, setDealers] = useState([]);
@@ -124,3 +124,4 @@ const Home = () => {
 };
 
 export default Home;
+

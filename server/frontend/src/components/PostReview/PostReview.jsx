@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./PostReview.css";
 
-const API_BASE = "http://localhost:1258";
+const API_BASE = "";
 
 const PostReview = () => {
     const { id } = useParams();

@@ -2,15 +2,17 @@
 Django settings for djangoproj project.
 """
 
+import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-=1sdrsvcg^!r=@r5^!w(z$8d@@nxu8+5nw7qwoxfbqa%c26)gt'
 
-DEBUG = True
+# DEBUG = False يفعّل عند النشر (production)، ونخليه True فقط محلياً
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 INSTALLED_APPS = [
@@ -28,6 +30,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -36,25 +39,19 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# CORS settings - يسمح لـ React (على بورت مختلف) بالتواصل مع Django مع دعم الكوكيز
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3901",
-    "http://127.0.0.1:3901",
-]
+# CORS - يسمح بالطلبات من أي مصدر (مناسب لبيئة الديمو/الكابستون)
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
-# لازم كمان نثق بمصدر الفرونت لأجل CSRF (مطلوب لبعض العمليات لاحقاً)
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3901",
-    "http://127.0.0.1:3901",
-]
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = 'Lax'
 
 ROOT_URLCONF = 'djangoproj.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'frontend' / 'build'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -102,7 +99,11 @@ USE_I18N = True
 USE_TZ = True
 
 
-STATIC_URL = 'static/'
+# Static files
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'frontend' / 'build' / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 MAILERS = {
@@ -110,7 +111,3 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
-
-# مهم: يسمح بإرسال كوكي الجلسة مع طلبات cross-origin من الفرونت (بورت مختلف)
-SESSION_COOKIE_SAMESITE = 'Lax'
-CSRF_COOKIE_SAMESITE = 'Lax'

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Login.css";
 
-const API_BASE = "http://localhost:1258";
+const API_BASE = "";
 
 const Login = () => {
     const [formData, setFormData] = useState({ username: "", password: "" });
@@ -70,4 +70,5 @@ const Login = () => {
 };
 
 export default Login;
+
 

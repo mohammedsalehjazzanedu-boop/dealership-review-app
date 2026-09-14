@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import "./DealerDetails.css";
 
-const API_BASE = "http://localhost:1258";
+const API_BASE = "";
 
 const DealerDetails = () => {
     const { id } = useParams();
@@ -91,3 +91,4 @@ const DealerDetails = () => {
 };
 
 export default DealerDetails;
+

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Register.css";
 
-const API_BASE = "http://localhost:1258";
+const API_BASE = "";
 
 const Register = () => {
     const [formData, setFormData] = useState({
