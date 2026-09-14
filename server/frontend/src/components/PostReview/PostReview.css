@@ -1,0 +1,83 @@
+.post-review-container {
+    min-height: 100vh;
+    background-color: #f5f5f5;
+}
+
+.post-review-nav {
+    background-color: #2c3e50;
+    padding: 15px 40px;
+}
+
+.post-review-nav .logo {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.post-review-card {
+    max-width: 500px;
+    margin: 40px auto;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+.post-review-card h2 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+.post-review-card form {
+    display: flex;
+    flex-direction: column;
+}
+
+.post-review-card label {
+    margin-top: 14px;
+    margin-bottom: 4px;
+    font-size: 14px;
+    color: #333;
+}
+
+.post-review-card textarea,
+.post-review-card input,
+.post-review-card select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.checkbox-row label {
+    margin: 0;
+}
+
+.post-review-card button {
+    margin-top: 25px;
+    padding: 12px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.post-review-card button:hover {
+    background-color: #2980b9;
+}
+
+.loading-text {
+    text-align: center;
+    padding: 60px;
+    color: #666;
+}
