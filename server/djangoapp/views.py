@@ -21,7 +21,7 @@ def _dealer_to_dict(dealer):
         "state": dealer.state,
         "st": dealer.st,
         "address": dealer.address,
-        "zip_code": dealer.zip_code,
+        "zip": dealer.zip_code,
         "lat": dealer.lat,
         "long": dealer.long,
     }
@@ -57,7 +57,7 @@ def logout_request(request):
 
 
 # ---------------------------------------------------------
-# Register (used by Register.jsx - Task 7)
+# Register
 # ---------------------------------------------------------
 @csrf_exempt
 def registration(request):
@@ -85,21 +85,20 @@ def registration(request):
 
 
 # ---------------------------------------------------------
-# Task 9: Get all dealers
+# دوال مشتركة (يستخدمها كل من الأسماء القديمة والجديدة)
 # ---------------------------------------------------------
-def get_dealerships(request, state="All"):
+def _get_dealers(state="All"):
     if state == "All":
         dealers = Dealer.objects.all()
     else:
         dealers = Dealer.objects.filter(state=state)
-
-    dealers_list = [_dealer_to_dict(d) for d in dealers]
-    return JsonResponse({"status": 200, "dealers": dealers_list})
+    return [_dealer_to_dict(d) for d in dealers]
 
 
-# ---------------------------------------------------------
-# Task 10: Get dealer by ID
-# ---------------------------------------------------------
+def get_dealerships(request, state="All"):
+    return JsonResponse({"status": 200, "dealers": _get_dealers(state)})
+
+
 def get_dealer_by_id(request, dealer_id):
     try:
         dealer = Dealer.objects.get(id=dealer_id)
@@ -108,9 +107,6 @@ def get_dealer_by_id(request, dealer_id):
         return JsonResponse({"status": 404, "message": "Dealer not found"})
 
 
-# ---------------------------------------------------------
-# Task 8: Get dealer reviews
-# ---------------------------------------------------------
 def get_dealer_reviews(request, dealer_id):
     reviews = Review.objects.filter(dealer_id=dealer_id)
     reviews_list = list(reviews.values())
@@ -118,7 +114,32 @@ def get_dealer_reviews(request, dealer_id):
 
 
 # ---------------------------------------------------------
-# Add a review (used by the Post Review page - Task 21/22)
+# النسخة الرسمية بأسماء fetchDealers / fetchDealer / fetchReviews
+# ---------------------------------------------------------
+def fetch_dealers(request):
+    return JsonResponse(_get_dealers("All"), safe=False)
+
+
+def fetch_dealers_by_state(request, state):
+    return JsonResponse(_get_dealers(state), safe=False)
+
+
+def fetch_dealer_by_id(request, dealer_id):
+    try:
+        dealer = Dealer.objects.get(id=dealer_id)
+        return JsonResponse(_dealer_to_dict(dealer), safe=False)
+    except Dealer.DoesNotExist:
+        return JsonResponse({"error": "Dealer not found"}, status=404)
+
+
+def fetch_reviews_by_dealer(request, dealer_id):
+    reviews = Review.objects.filter(dealer_id=dealer_id)
+    reviews_list = list(reviews.values())
+    return JsonResponse(reviews_list, safe=False)
+
+
+# ---------------------------------------------------------
+# إضافة ريفيو
 # ---------------------------------------------------------
 @csrf_exempt
 def add_review(request):
@@ -143,8 +164,21 @@ def add_review(request):
 
 
 # ---------------------------------------------------------
-# Task 14 & 15: Get all car makes and models (تنسيق داخلي متداخل)
+# get_cars: تنسيق مسطّح (قائمة أزواج ماركة-موديل)
 # ---------------------------------------------------------
+def get_cars(request):
+    car_models = CarModel.objects.select_related('car_make').all()
+    cars = []
+
+    for model in car_models:
+        cars.append({
+            "CarMake": model.car_make.name,
+            "CarModel": model.name,
+        })
+
+    return JsonResponse({"CarModels": cars})
+
+
 def get_cars_nested(request):
     car_makes = CarMake.objects.all()
     result = []
@@ -162,23 +196,7 @@ def get_cars_nested(request):
 
 
 # ---------------------------------------------------------
-# get_cars: تنسيق مسطّح (قائمة أزواج ماركة-موديل)
-# ---------------------------------------------------------
-def get_cars(request):
-    car_models = CarModel.objects.select_related('car_make').all()
-    cars = []
-
-    for model in car_models:
-        cars.append({
-            "CarMake": model.car_make.name,
-            "CarModel": model.name,
-        })
-
-    return JsonResponse({"CarModels": cars})
-
-
-# ---------------------------------------------------------
-# Task 16: Analyze sentiment of a review
+# تحليل المشاعر
 # ---------------------------------------------------------
 def analyze_sentiment_text(text):
     if not text:
@@ -206,7 +224,8 @@ def analyze_sentiment_text(text):
         return "neutral"
 
 
-def analyze_review_sentiment(request):
-    text = request.GET.get("text", "")
+def analyze_review_sentiment(request, text=None):
+    if text is None:
+        text = request.GET.get("text", "")
     sentiment = analyze_sentiment_text(text)
     return JsonResponse({"sentiment": sentiment})
