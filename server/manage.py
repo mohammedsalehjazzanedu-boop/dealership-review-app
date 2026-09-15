@@ -6,6 +6,9 @@ import sys
 
 def main():
     """Run administrative tasks."""
+    # زيادة حد الـ recursion لتفادي مشكلة معروفة مع بعض إصدارات Python/Django
+    sys.setrecursionlimit(10000)
+
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'djangoproj.settings')
     try:
         from django.core.management import execute_from_command_line
